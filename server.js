@@ -1,4 +1,9 @@
 
+// Check if session secret is matching
+if(process.env.NODE_ENV != 'production') {
+    // If not require
+    require('dotenv').config()
+}
 // CONST
     // Express
 const express = require('express')
@@ -14,11 +19,16 @@ const users = []
 const passport = require('passport')
 const initializePassport = require('./passport-config')
 
-// call initialize function
+    // call initialize function
 initializePassport(
     passport, // First Parameter
     email => users.find( user => user.email === email) // Method -> Get User By Email
 )
+
+    // Flash
+const flash = require('express-flash')
+const session = require('express-session')
+
 
 // SETs
 
@@ -27,6 +37,14 @@ app.set('view-engine','ejs');
 
     // url encoded
 app.use(express.urlencoded({extended: false}))
+
+    // flash
+app.use(flash())
+
+    // Session
+app.use(session({
+    secret: process.env.SESSION_SECRET
+}))
 
 
 // GETS
