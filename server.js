@@ -4,6 +4,22 @@
 const express = require('express')
 const app = express()
 
+    // Bcrypt
+const bcrypt = require('bcrypt')
+
+    // Users
+const users = []
+
+    // Passport initialize
+const passport = require('passport')
+const initializePassport = require('./passport-config')
+
+// call initialize function
+initializePassport(
+    passport, // First Parameter
+    email => users.find( user => user.email === email) // Method -> Get User By Email
+)
+
 // SETs
 
     // view engine
@@ -31,8 +47,36 @@ app.get('/login', (req,res) => {
 
 // POSYS
 
-app.post('/register', (req,res) => {
+    // Register Operations
+app.post('/register', async (req,res) => {
 
+    try {
+        // crypt the passport
+        const hashedPassword = await bcrypt.hash(req.body.password,10);
+
+        // Append the user list
+        users.push({
+            id: Date.now().toString(),
+            email: req.body.email,
+            username: req.body.username,
+            password: hashedPassword
+        })
+        // Inform
+        console.log("User is registered successfully !")
+        // Print the users
+        console.log(users)
+        // Then redirect login page
+        res.redirect('/login');
+    
+    // Any problen occurs
+    } catch (error) {
+        // Inform
+        console.log("A Problem has occured !!")
+        // redirect register again
+        res.redirect('/register');
+    }
+    
+    // Print the users
 })
 
 app.post('/login', (req,res) => {
