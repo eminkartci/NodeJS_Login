@@ -43,8 +43,14 @@ app.use(flash())
 
     // Session
 app.use(session({
-    secret: process.env.SESSION_SECRET
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
 }))
+
+    // Passport
+app.use(passport.initialize())
+app.use(passport.session())
 
 
 // GETS
@@ -97,9 +103,13 @@ app.post('/register', async (req,res) => {
     // Print the users
 })
 
-app.post('/login', (req,res) => {
-
-})
+// Authanticate login page
+app.post('/login', passport.authenticate('local',{
+    // Some configurations
+    successRedirect: "/",
+    failureRedirect: "/login", // If any problem go back to login
+    failureFlash: true
+}))
 
 // Listen to Port 1122
 app.listen(1122,() => {
