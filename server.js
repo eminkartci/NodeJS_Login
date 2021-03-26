@@ -26,7 +26,7 @@ initializePassport(
     id => users.find( user => user.id === id) // Method -> Get User By Id
 )
 
-    // Flash
+    // Flash & Session
 const flash = require('express-flash')
 const session = require('express-session')
 

@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 
 
 // initialize passport
-function initialize( passport, getUserByEmail, getUserByEmail) {
+function initialize( passport, getUserByEmail, getUserById) {
 
     // Authenticate Function
     const authenticateUser = async (email, password, done) => {
