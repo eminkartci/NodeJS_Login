@@ -7,12 +7,12 @@ const bcrypt = require('bcrypt');
 
 
 // initialize passport
-function initialize( passport, getUserByEmail) {
+function initialize( passport, getUserByEmail, getUserByEmail) {
 
     // Authenticate Function
-    const authenticateUser = (email, password, done) => {
+    const authenticateUser = async (email, password, done) => {
         // Get user by email
-        const user = getUserByEmail(email);
+        const user = getUserByEmail(email)
 
         // check if the user exists
         if(user == null){
@@ -27,8 +27,10 @@ function initialize( passport, getUserByEmail) {
         try{
             // If the passwords are matching
             if(await bcrypt.compare(password,user.password)){
-
-
+                // return 
+                // error -> null
+                // user  -> user
+                return done(null,user)
             // Otherwise
             }else{
                 // return done
@@ -41,20 +43,18 @@ function initialize( passport, getUserByEmail) {
         } catch (e) {
             // return done
                 // error -> e
-            done(e)
+            return done(e)
         }
     }
 
-    passport.use(new LocalStrategy({usernameField: 'email'}), authenticateUser)
+    passport.use(new LocalStrategy({usernameField: 'email'}, authenticateUser))
     
     // Serialize User
-    passport.serializeUser((user,done) => {
-
-    })
+    passport.serializeUser((user,done) => done(null,user.id))
 
     // Deserialize User
     passport.deserializeUser((id,done) => {
-
+        return done(null,getUserById(id))
     })
 
 }

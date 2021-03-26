@@ -22,7 +22,8 @@ const initializePassport = require('./passport-config')
     // call initialize function
 initializePassport(
     passport, // First Parameter
-    email => users.find( user => user.email === email) // Method -> Get User By Email
+    email => users.find( user => user.email === email), // Method -> Get User By Email
+    id => users.find( user => user.id === id) // Method -> Get User By Id
 )
 
     // Flash

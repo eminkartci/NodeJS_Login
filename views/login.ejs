@@ -1,10 +1,13 @@
 <!DOCTYPE html>
+
+
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign IN</title>
+    <title>Login</title>
 </head>
 <body>
 
@@ -15,6 +18,12 @@
     <div>
         <h1>Login</h1>
 
+        <div>
+            <% if(messages.error) { %> 
+                <h2><%= messages.error %> </h2>
+            <% } %> 
+        </div>
+
         <form action="/login" method="POST">
         
             <div>
@@ -23,8 +32,8 @@
             </div>
 
             <div>
-                <label for="passport"> Passport </label>
-                <input type="passport" name="passport" id="passport" required>
+                <label for="password"> Password </label>
+                <input type="password" name="password" id="password" required>
             </div>
 
             <div>
